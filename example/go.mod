@@ -3,7 +3,7 @@ module example
 go 1.20
 
 require (
-	github.com/chack1920/tdriver/v3 v3.5.1
+	github.com/chack1920/tdriver/v3 v3.5.2
 	gorm.io/gorm v1.25.1
 )
 
