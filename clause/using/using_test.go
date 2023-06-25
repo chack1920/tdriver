@@ -2,6 +2,8 @@ package using_test
 
 import (
 	"fmt"
+	"github.com/chack1920/tdriver/v3/clause/tests"
+	"github.com/chack1920/tdriver/v3/clause/using"
 	"gorm.io/gorm/clause"
 	"testing"
 )

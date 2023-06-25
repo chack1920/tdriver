@@ -2,10 +2,11 @@ package window_test
 
 import (
 	"fmt"
+	"github.com/chack1920/tdriver/v3/clause/tests"
+	"github.com/chack1920/tdriver/v3/clause/window"
+	"gorm.io/gorm/clause"
 	"testing"
 	"time"
-
-	"gorm.io/gorm/clause"
 )
 
 func TestSetInterval(t *testing.T) {

@@ -2,9 +2,10 @@ package slimit_test
 
 import (
 	"fmt"
-	"testing"
-
+	"github.com/chack1920/tdriver/v3/clause/slimit"
+	"github.com/chack1920/tdriver/v3/clause/tests"
 	"gorm.io/gorm/clause"
+	"testing"
 )
 
 func TestSLimit(t *testing.T) {
