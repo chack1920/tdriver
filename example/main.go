@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
+	"github.com/chack1920/tdriver/v3"
 	"github.com/chack1920/tdriver/v3/clause/create"
+	"github.com/chack1920/tdriver/v3/clause/using"
+	"gorm.io/gorm"
 	"log"
 	"time"
-
-	"github.com/chack1920/tdriver/v3"
-	"gorm.io/gorm"
 )
 
 type Data struct {
@@ -32,7 +32,32 @@ func main() {
 	//fmt.Println(&d)
 	showTable(db)
 	Table(db)
-
+	val := map[string]interface{}{
+		"snub":       "866262045704805",            //设备名称
+		"typesn":     "MY-2022",                    //设备型号
+		"projectid":  "xm32423423434",              //项目编号
+		"provinceid": "430000",                     //省编号
+		"cityid":     "430400",                     //市编号
+		"areaid":     "430408",                     //区编号
+		"supplierid": "gy23423dfdsf34234234234234", //供应商id
+	}
+	valel := map[string]interface{}{
+		"ts":            time.Now(),
+		"pm25":          101.5,
+		"pm10":          100.2,
+		"tsp":           43.2,
+		"noise":         55.2,
+		"temperature":   23,
+		"humidity":      66,
+		"wind_speed":    3,
+		"winddirection": "东南",
+		"wind_power":    3,
+		"air_pressure":  1000.1, //气压
+		"longitude":     26.907082,
+		"latitude":      112.557941,
+		"warning_state": 0,
+	}
+	aqiAutoInData(db, "stb_aqis", "866262045704805", val, valel)
 }
 func SelectQuery(db *gorm.DB, tableName string) []map[string]interface{} {
 	var result []map[string]interface{}
@@ -42,6 +67,42 @@ func SelectQuery(db *gorm.DB, tableName string) []map[string]interface{} {
 		log.Fatalf("aggregate query error %v", err.Error)
 	}
 	return result
+}
+
+/*func testmap(tableName string, typesn string, projectid string, provinceid string, cityid string, areaid string, supplierid string) {
+	val := map[string]interface{}{
+		"snub":       tableName,  //设备名称
+		"typesn":     typesn,     //设备型号
+		"projectid":  projectid,  //项目编号
+		"provinceid": provinceid, //省编号
+		"cityid":     cityid,     //市编号
+		"areaid":     areaid,     //区编号
+		"supplierid": supplierid, //供应商id
+	}
+
+}*/
+
+// INSERT INTO tb_2 USING stb_1('tbn') TAGS('tb_2') (ts,value) VALUES ('2021-08-11 09:43:01.041',0.940509)
+// automaticTableCreationWhenInsertingData(db, "tb_2", t1, randValue2)
+func autoTableCreatInsertData(db *gorm.DB, tableName string, ts time.Time, value interface{}) {
+	//automatic table creation when inserting data
+	err := db.Table(tableName).Clauses(using.SetUsing("stb_1", map[string]interface{}{
+		"tbn": tableName,
+	})).Create(map[string]interface{}{
+		"ts":    ts,
+		"value": value,
+	}).Error
+	if err != nil {
+		log.Fatalf("create table when insert data error %v", err)
+	}
+}
+
+func aqiAutoInData(db *gorm.DB, sTable string, tableName string, val map[string]interface{}, value map[string]interface{}) {
+	err := db.Table("aqi_" + tableName).Clauses(using.SetUsing(sTable, val)).Create(value).Error
+	if err != nil {
+		log.Fatalf("创建数据失败 %v", err)
+	}
+	//通过stable插入语句
 }
 func createTableUsingStable(db *gorm.DB) {
 	// create table using sTable

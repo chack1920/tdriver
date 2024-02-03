@@ -1,10 +1,10 @@
-module github.com/chack1920/tdriver/v3
+module github.com/chack1920
 
-go 1.20
+go 1.21.6
 
 require (
-	github.com/taosdata/driver-go/v3 v3.5.0
-	gorm.io/gorm v1.25.1
+	github.com/chack1920/tdriver/v3 v3.5.2
+	gorm.io/gorm v1.25.6
 )
 
 require (
